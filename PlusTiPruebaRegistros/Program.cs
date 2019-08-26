@@ -2,6 +2,8 @@
 using System.IO;
 using System.Data.SqlClient;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
 
 namespace PlusTiPruebaRegistros
 {
@@ -11,6 +13,8 @@ namespace PlusTiPruebaRegistros
         {
             //MainClass m = new MainClass();
             //m.InitSql();
+            Stopwatch SplitWatch = new Stopwatch();
+            Stopwatch ListWatch = new Stopwatch();
 
             Console.WriteLine("Ingresa la ruta del archivo: ");
             String filepath = Console.ReadLine();
@@ -34,32 +38,34 @@ namespace PlusTiPruebaRegistros
                     else
                     {
                         Console.WriteLine("Con Split: ");
-                        TimeSpan stop;
-                        TimeSpan start = new TimeSpan(DateTime.Now.Ticks);
+                        SplitWatch.Start();
                         String[] strList = datos.Split(separator);
                         foreach (String s in strList)
                         {
                             Console.WriteLine(s);
                         }
-                        stop = new TimeSpan(DateTime.Now.Ticks);
-                        Console.WriteLine(stop.Subtract(start).TotalSeconds + " segundos");
+                        SplitWatch.Stop();
+                        Console.WriteLine("Time elapsed: {0}", SplitWatch.Elapsed);
+
 
 
                         Console.WriteLine("==========================================");
 
                         Console.WriteLine("Con Substring: ");
-                        TimeSpan stoptimer;
-                        TimeSpan starttimer = new TimeSpan(DateTime.Now.Ticks);
 
                         Char comma = ',';
                         List<String> filtered = SplitWords(datos, comma);
+
+                        ListWatch.Start();
 
                         foreach(String dt in filtered){
                             Console.WriteLine(dt);
                         }
 
-                        stoptimer = new TimeSpan(DateTime.Now.Ticks);
-                        Console.WriteLine(stoptimer.Subtract(starttimer).TotalSeconds + " segundos");
+                        ListWatch.Stop();
+                        Console.WriteLine("Time elapsed: {0}", ListWatch.Elapsed);
+
+
 
                     }
 
