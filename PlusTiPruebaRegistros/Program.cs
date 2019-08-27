@@ -11,10 +11,12 @@ namespace PlusTiPruebaRegistros
     {
         public static void Main(string[] args)
         {
-            //MainClass m = new MainClass();
+            MainClass m = new MainClass();
             //m.InitSql();
             Stopwatch SplitWatch = new Stopwatch();
             Stopwatch ListWatch = new Stopwatch();
+            Stopwatch SubstrWatch = new Stopwatch();
+
 
             Console.WriteLine("Ingresa la ruta del archivo: ");
             String filepath = Console.ReadLine();
@@ -27,7 +29,6 @@ namespace PlusTiPruebaRegistros
             try{
 
                 String datos = File.ReadAllText(filepath);
-                Console.WriteLine("Datos del Array: " + datos);
                 if (datos != null)
                 {
 
@@ -51,7 +52,7 @@ namespace PlusTiPruebaRegistros
 
                         Console.WriteLine("==========================================");
 
-                        Console.WriteLine("Con Substring: ");
+                        Console.WriteLine("Con Metodo list: ");
 
                         Char comma = ',';
                         List<String> filtered = SplitWords(datos, comma);
@@ -66,16 +67,44 @@ namespace PlusTiPruebaRegistros
                         Console.WriteLine("Time elapsed: {0}", ListWatch.Elapsed);
 
 
+                        Console.WriteLine("==========================================");
+
+                        Console.WriteLine("Con Metodo Substring:");
+
+
+                        List<String> substr = Substr(datos, comma);
+                        SubstrWatch.Start();
+
+                        foreach(String sb in substr){
+                            Console.WriteLine(sb);
+                        }
+
+                        SubstrWatch.Stop();
+                        Console.WriteLine("Time elapsed: {0}", SubstrWatch.Elapsed);
 
                     }
-
-                    Console.ReadKey();
+                    Thread.Sleep(5000);
                 }
             }
             catch(IOException e){
                 Console.WriteLine(e.Message);
             }
 
+        }
+
+        static List<String> Substr(String TodosLosDatos, char ToDelete){
+            List<String> palabras = new List<String>();
+            int length = (TodosLosDatos = TodosLosDatos + ',').Length;
+            int i = 0;
+
+            int lastFound = 0;
+            for (i = 0; i < length; i++) {
+                if (TodosLosDatos[i] != ',') continue;
+                String found = TodosLosDatos.Substring(lastFound, i - lastFound);
+                lastFound = i + 1;
+                palabras.Add(found);
+            }
+            return palabras;
         }
 
 
